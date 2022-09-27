@@ -309,6 +309,7 @@ var AutosizeIframe = A.Component.create({
                 instance._iframeHeight = value;
 
                 instance.node.setStyle('height', value);
+                instance.node.scrollIntoView(true);
             }
         },
 
