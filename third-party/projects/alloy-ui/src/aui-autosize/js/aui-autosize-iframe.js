@@ -87,6 +87,17 @@ var AutosizeIframe = A.Component.create({
          */
         width: {
             value: null
+        },        
+
+        /**
+         * Indicates if the scroll into view should be executed
+         *
+         * @attribute scrollIntoView
+         * @default false
+         * @type {Boolean}
+         */
+        scrollIntoView: {
+            value: false
         }
     },
 
@@ -126,6 +137,7 @@ var AutosizeIframe = A.Component.create({
             instance.after('heightChange', instance._afterHeightChange);
             instance.after('widthChange', instance._afterWidthChange);
             instance.after('monitorHeightChange', instance._afterMonitorHeightChange);
+            instance.after('scrollIntoViewChange', instance._afterScrollIntoViewChange);
         },
 
         /**
@@ -200,6 +212,19 @@ var AutosizeIframe = A.Component.create({
             var instance = this;
 
             instance._uiSetMonitorHeight(event.newVal);
+        },
+
+        /**
+         * Fires after `scrollIntoView` attribute changes.
+         *
+         * @method _afterScrollIntoViewChange
+         * @param event
+         * @protected
+         */
+         _afterScrollIntoViewChange: function(event) {
+            var instance = this;
+
+            instance._uiSetScrollIntoView(event.newVal);
         },
 
         /**
@@ -309,8 +334,22 @@ var AutosizeIframe = A.Component.create({
                 instance._iframeHeight = value;
 
                 instance.node.setStyle('height', value);
-                instance.node.scrollIntoView(true);
+
+                if (instance.get('scrollIntoView')) {
+                    instance.node.scrollIntoView(true)
+                }
             }
+        },
+        /**
+         * Sets the iframe scroll into view attribute in the UI.
+         *
+         * @method _uiSetScrollIntoView
+         * @param value
+         * @protected
+         */
+         _uiSetScrollIntoView: function(value) {
+            var instance = this;
+            instance.node.scrollIntoView(value)
         },
 
         /**
